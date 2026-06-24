@@ -168,9 +168,9 @@ footer a{color:var(--gold);text-decoration:none;}
       <h3>Step 1 — Choose Your Service</h3>
       <p class="step-desc">Select the type of clean you need. Your base price will appear in the summary.</p>
       <div class="radio-group">
-        <label class="radio-item selected" onclick="selectService(this,'End of Tenancy Cleaning',150,1.15)">
+        <label class="radio-item selected" onclick="selectService(this,'End of Tenancy Cleaning',80,1.15)">
           <input type="radio" name="serviceType" checked/>
-          <div><div class="radio-label">🏠 End of Tenancy Cleaning</div><div class="radio-sub">Base: £150 — comprehensive clean for moving in/out</div></div>
+          <div><div class="radio-label">🏠 End of Tenancy Cleaning</div><div class="radio-sub">Base: £80 — comprehensive clean for moving in/out</div></div>
         </label>
         <label class="radio-item" onclick="selectService(this,'Deep Cleaning',120,1.10)">
           <input type="radio" name="serviceType"/>
@@ -384,7 +384,7 @@ footer a{color:var(--gold);text-decoration:none;}
     <h3>💷 Your Price Summary</h3>
     <div id="priceLines">
       <div class="price-line"><span class="key">Service</span><span class="val" id="pl-service">End of Tenancy</span></div>
-      <div class="price-line"><span class="key">Base rate</span><span class="val" id="pl-base">£150.00</span></div>
+      <div class="price-line"><span class="key">Base rate</span><span class="val" id="pl-base">£80.00</span></div>
       <div class="price-line" id="pl-rooms-row" style="display:none"><span class="key">Rooms</span><span class="val" id="pl-rooms">£0.00</span></div>
       <div class="price-line" id="pl-windows-row" style="display:none"><span class="key">Windows</span><span class="val" id="pl-windows">£0.00</span></div>
       <div class="price-line" id="pl-appliances-row" style="display:none"><span class="key">Appliances</span><span class="val" id="pl-appliances">£0.00</span></div>
@@ -393,7 +393,7 @@ footer a{color:var(--gold);text-decoration:none;}
     </div>
     <div class="price-total-line">
       <span class="key">Estimated Total</span>
-      <span class="val" id="priceTotal">£150.00</span>
+      <span class="val" id="priceTotal">£80.00</span>
     </div>
     <p class="price-note">Final price confirmed after booking review. VAT not applicable at this time.</p>
     <div class="trust-badges">
@@ -443,7 +443,7 @@ const state = {
   currentStep: 1,
   totalSteps: 8,
   serviceName: 'End of Tenancy Cleaning',
-  basePrice: 150,
+  basePrice: 80,
   multiplier: 1.15,
   rooms: { bedrooms:1, bathrooms:1, kitchens:1, livingrooms:1, diningrooms:0, conservatories:0, utilityrooms:0 },
   roomPrices: { bedrooms:30, bathrooms:35, kitchens:55, livingrooms:35, diningrooms:20, conservatories:35, utilityrooms:20 },
