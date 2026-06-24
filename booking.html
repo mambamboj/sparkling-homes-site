@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Book a Clean — Sparkling Homes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --purple:#4b0081;--purple-dark:#35005c;--purple-mid:#6b00b8;--purple-light:#f3e8ff;--purple-pale:#faf5ff;
+  --gold:#c9a227;--gold-light:#f5e7b0;--white:#ffffff;--grey-100:#f8f8f8;--grey-200:#ececec;
+  --grey-400:#aaaaaa;--grey-600:#555555;--grey-800:#222222;--green:#1a7a3c;--red:#c0392b;
+  --radius:12px;--shadow:0 4px 24px rgba(75,0,129,0.10);--shadow-lg:0 8px 40px rgba(75,0,129,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--grey-800);background:var(--grey-100);line-height:1.6;min-height:100vh;}
+
+/* ── HEADER ── */
+header{background:var(--purple-dark);padding:0 5%;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;text-decoration:none;letter-spacing:-0.5px;}
+.logo span{color:var(--gold);}
+.back-link{color:rgba(255,255,255,0.75);font-size:0.85rem;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.back-link:hover{color:var(--gold);}
+
+/* ── HERO STRIP ── */
+.hero-strip{background:linear-gradient(135deg,var(--purple-dark),var(--purple));padding:36px 5% 28px;text-align:center;}
+.hero-strip h1{font-family:'Playfair Display',serif;color:white;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;margin-bottom:8px;}
+.hero-strip h1 span{color:var(--gold);}
+.hero-strip p{color:rgba(255,255,255,0.78);font-size:0.95rem;max-width:540px;margin:0 auto;}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:32px 5% 60px;display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;}
+
+/* ── FORM CARD ── */
+.form-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+
+/* ── PROGRESS ── */
+.progress-bar{height:5px;background:var(--purple-light);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width 0.4s ease;width:10%;}
+.step-indicators{display:flex;gap:6px;flex-wrap:wrap;padding:14px 20px 0;border-bottom:1px solid var(--grey-200);}
+.step-ind{font-size:0.72rem;font-weight:500;color:var(--grey-400);padding:4px 8px;border-radius:100px;background:var(--grey-100);white-space:nowrap;}
+.step-ind.active{background:var(--purple);color:white;font-weight:600;}
+.step-ind.done{background:var(--purple-light);color:var(--purple);font-weight:600;}
+
+/* ── STEPS ── */
+.form-step{display:none;padding:24px 24px 8px;}
+.form-step.active{display:block;}
+.form-step h3{font-size:1.05rem;font-weight:700;color:var(--grey-800);margin-bottom:6px;}
+.step-desc{font-size:0.87rem;color:var(--grey-600);margin-bottom:18px;line-height:1.5;}
+
+/* ── RADIO ── */
+.radio-group{display:flex;flex-direction:column;gap:10px;}
+.radio-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;cursor:pointer;transition:all 0.18s;}
+.radio-item input{accent-color:var(--purple);width:16px;height:16px;flex-shrink:0;}
+.radio-item:hover{border-color:var(--purple-light);background:var(--purple-pale);}
+.radio-item.selected{border-color:var(--purple);background:var(--purple-pale);}
+.radio-label{font-size:0.9rem;font-weight:600;color:var(--grey-800);}
+.radio-sub{font-size:0.78rem;color:var(--purple);margin-top:2px;}
+
+/* ── QTY ── */
+.qty-control{display:flex;align-items:center;gap:10px;}
+.qty-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--purple);background:white;color:var(--purple);font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.qty-btn:hover{background:var(--purple);color:white;}
+.qty-val{font-weight:700;font-size:1rem;min-width:20px;text-align:center;}
+
+/* ── CHECKBOXES ── */
+.check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+.check-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1.5px solid var(--grey-200);border-radius:8px;cursor:pointer;transition:all 0.15s;}
+.check-item input{display:none;}
+.check-item:hover{border-color:var(--purple-light);background:var(--purple-pale);}
+.check-item.selected{border-color:var(--purple);background:var(--purple-pale);}
+.check-label{font-size:0.82rem;font-weight:500;color:var(--grey-800);}
+.check-price{font-size:0.78rem;font-weight:700;color:var(--purple);}
+
+/* ── FORM FIELDS ── */
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.form-group label{font-size:0.82rem;font-weight:600;color:var(--grey-700);}
+.form-group input,.form-group select,.form-group textarea{padding:10px 12px;border:1.5px solid var(--grey-200);border-radius:8px;font-size:0.88rem;font-family:inherit;color:var(--grey-800);outline:none;transition:border 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--purple);}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ── NOTICE ── */
+.notice-box{background:var(--purple-pale);border-left:3px solid var(--purple);border-radius:6px;padding:10px 12px;font-size:0.8rem;color:var(--grey-700);display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;line-height:1.5;}
+
+/* ── STEP NAV ── */
+.step-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--grey-200);margin-top:8px;}
+.btn-step-back{background:none;border:1.5px solid var(--grey-200);color:var(--grey-600);padding:9px 18px;border-radius:7px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-step-back:hover{border-color:var(--purple);color:var(--purple);}
+.btn-step-next{background:var(--purple);color:white;padding:9px 22px;border-radius:7px;font-size:0.88rem;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;}
+.btn-step-next:hover{background:var(--purple-dark);}
+.btn-pay{width:100%;background:linear-gradient(135deg,var(--purple),var(--purple-mid));color:white;padding:14px;border-radius:8px;font-size:0.95rem;font-weight:700;border:none;cursor:pointer;margin-top:16px;transition:all 0.2s;letter-spacing:0.3px;}
+.btn-pay:hover{background:var(--purple-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(75,0,129,0.3);}
+
+/* ── PRICE SIDEBAR ── */
+.price-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;position:sticky;top:84px;}
+.price-card h3{font-size:0.95rem;font-weight:700;color:var(--grey-800);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--purple-light);}
+.price-line{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--purple-light);font-size:0.85rem;}
+.price-line .key{color:var(--grey-600);}
+.price-line .val{font-weight:600;color:var(--grey-800);}
+.price-total-line{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid var(--purple);}
+.price-total-line .key{font-weight:700;font-size:0.9rem;color:var(--grey-800);}
+.price-total-line .val{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--purple);}
+.price-note{font-size:0.75rem;color:var(--grey-400);margin-top:8px;line-height:1.5;}
+.trust-badges{margin-top:16px;display:flex;flex-direction:column;gap:7px;}
+.trust-badge{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--grey-600);background:var(--grey-100);padding:7px 10px;border-radius:6px;}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:white;border-radius:16px;padding:36px;max-width:440px;width:100%;text-align:center;box-shadow:var(--shadow-lg);}
+.modal-icon{font-size:3rem;margin-bottom:12px;}
+.modal-box h3{font-size:1.2rem;font-weight:700;color:var(--grey-800);margin-bottom:8px;}
+.modal-box p{font-size:0.88rem;color:var(--grey-600);margin-bottom:16px;line-height:1.6;}
+.modal-ref{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--purple);background:var(--purple-pale);padding:10px 20px;border-radius:8px;margin:12px 0;}
+
+/* ── GEO MODAL ── */
+.geo-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.geo-modal-overlay.show{display:flex;}
+.geo-modal{background:white;border-radius:16px;padding:32px;max-width:420px;width:100%;text-align:center;box-shadow:var(--shadow-lg);}
+.geo-modal h3{font-size:1.1rem;font-weight:700;margin-bottom:8px;}
+.geo-modal p{font-size:0.86rem;color:var(--grey-600);margin-bottom:16px;line-height:1.6;}
+.geo-notify-form{display:flex;flex-direction:column;gap:10px;}
+.geo-notify-form input{padding:10px 12px;border:1.5px solid var(--grey-200);border-radius:8px;font-size:0.88rem;outline:none;}
+.geo-notify-form input:focus{border-color:var(--purple);}
+.btn-primary{background:var(--gold);color:var(--purple-dark);padding:11px 22px;border-radius:8px;font-weight:700;font-size:0.9rem;border:none;cursor:pointer;transition:all 0.2s;}
+.btn-primary:hover{background:#b8910f;}
+.success-msg{background:#e8f5e9;color:var(--green);border-radius:8px;padding:10px 14px;font-size:0.85rem;font-weight:600;}
+
+/* ── FOOTER ── */
+footer{background:var(--purple-dark);color:rgba(255,255,255,0.65);text-align:center;padding:24px 5%;font-size:0.8rem;margin-top:40px;}
+footer a{color:var(--gold);text-decoration:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .page-wrap{grid-template-columns:1fr;}
+  .price-card{position:static;}
+  .form-row{grid-template-columns:1fr;}
+  .check-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="https://sparklinghomes.co.uk">Sparkling<span>Homes</span></a>
+    <a class="back-link" href="https://sparklinghomes.co.uk">← Back to Website</a>
+  </div>
+</header>
+
+<div class="hero-strip">
+  <h1>Build Your Quote & <span>Book Online</span></h1>
+  <p>Add your rooms and extras — your price updates as you go. No surprises at checkout.</p>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── FORM ── -->
+  <div class="form-card">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="step-indicators" id="stepIndicators"></div>
+
+    <!-- STEP 1: Service -->
+    <div class="form-step active" id="fstep1">
+      <h3>Step 1 — Choose Your Service</h3>
+      <p class="step-desc">Select the type of clean you need. Your base price will appear in the summary.</p>
+      <div class="radio-group">
+        <label class="radio-item selected" onclick="selectService(this,'End of Tenancy Cleaning',150,1.15)">
+          <input type="radio" name="serviceType" checked/>
+          <div><div class="radio-label">🏠 End of Tenancy Cleaning</div><div class="radio-sub">Base: £150 — comprehensive clean for moving in/out</div></div>
+        </label>
+        <label class="radio-item" onclick="selectService(this,'Deep Cleaning',120,1.10)">
+          <input type="radio" name="serviceType"/>
+          <div><div class="radio-label">🧹 Deep Cleaning</div><div class="radio-sub">Base: £120 — thorough top-to-bottom clean</div></div>
+        </label>
+        <label class="radio-item" onclick="selectService(this,'Home Cleaning (Once-off)',100,1.00)">
+          <input type="radio" name="serviceType"/>
+          <div><div class="radio-label">🛋️ Home Cleaning (Once-off)</div><div class="radio-sub">Base: £100 — one-time clean tailored to your needs</div></div>
+        </label>
+        <label class="radio-item" onclick="selectService(this,'After Builders Cleaning',180,1.20)">
+          <input type="radio" name="serviceType"/>
+          <div><div class="radio-label">🔨 After Builders Cleaning</div><div class="radio-sub">Base: £180 — post-construction specialist clean</div></div>
+        </label>
+        <label class="radio-item" onclick="selectService(this,'Airbnb / Holiday Let Cleaning',80,1.00)">
+          <input type="radio" name="serviceType"/>
+          <div><div class="radio-label">🏡 Airbnb / Holiday Let Cleaning</div><div class="radio-sub">Base: £80 — quick turnaround between guest stays</div></div>
+        </label>
+        <label class="radio-item" onclick="selectService(this,'Office / Commercial Cleaning',0,1.00)">
+          <input type="radio" name="serviceType"/>
+          <div><div class="radio-label">🏢 Office / Commercial Cleaning</div><div class="radio-sub">Quote-based — contact us for commercial spaces</div></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 2: Rooms -->
+    <div class="form-step" id="fstep2">
+      <h3>Step 2 — Rooms &amp; Areas</h3>
+      <p class="step-desc">Tell us about your property. Each room adds to your total transparently.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Bedrooms</div><div style="font-size:0.78rem;color:var(--purple);">£30 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('bedrooms',-1)">−</button><span class="qty-val" id="val-bedrooms">1</span><button class="qty-btn" onclick="changeQty('bedrooms',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Bathrooms &amp; Toilets</div><div style="font-size:0.78rem;color:var(--purple);">£35 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('bathrooms',-1)">−</button><span class="qty-val" id="val-bathrooms">1</span><button class="qty-btn" onclick="changeQty('bathrooms',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Kitchens</div><div style="font-size:0.78rem;color:var(--purple);">£55 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('kitchens',-1)">−</button><span class="qty-val" id="val-kitchens">1</span><button class="qty-btn" onclick="changeQty('kitchens',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Living Rooms / Hallways</div><div style="font-size:0.78rem;color:var(--purple);">£35 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('livingrooms',-1)">−</button><span class="qty-val" id="val-livingrooms">1</span><button class="qty-btn" onclick="changeQty('livingrooms',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Dining Rooms</div><div style="font-size:0.78rem;color:var(--purple);">£20 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('diningrooms',-1)">−</button><span class="qty-val" id="val-diningrooms">0</span><button class="qty-btn" onclick="changeQty('diningrooms',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Conservatories</div><div style="font-size:0.78rem;color:var(--purple);">£35 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('conservatories',-1)">−</button><span class="qty-val" id="val-conservatories">0</span><button class="qty-btn" onclick="changeQty('conservatories',1)">+</button></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Utility Rooms</div><div style="font-size:0.78rem;color:var(--purple);">£20 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('utilityrooms',-1)">−</button><span class="qty-val" id="val-utilityrooms">0</span><button class="qty-btn" onclick="changeQty('utilityrooms',1)">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Windows -->
+    <div class="form-step" id="fstep3">
+      <h3>Step 3 — Window Cleaning</h3>
+      <p class="step-desc">Interior window cleaning is available for all booked rooms. Select the number of windows.</p>
+      <div class="notice-box">⚠️ <span>Exterior window cleaning is only available where windows are safely accessible from the ground. Non-accessible windows are excluded for insurance compliance.</span></div>
+      <div class="radio-group" style="margin-bottom:16px;">
+        <label class="radio-item selected" onclick="selectRadio(this,'windowType','None')">
+          <input type="radio" name="windowType" checked/>
+          <div class="radio-item-content"><div class="radio-label">No window cleaning required</div></div>
+        </label>
+        <label class="radio-item" onclick="selectRadio(this,'windowType','Interior')">
+          <input type="radio" name="windowType"/>
+          <div class="radio-item-content"><div class="radio-label">Interior windows only</div><div class="radio-sub">£15 per window, in booked rooms only</div></div>
+        </label>
+      </div>
+      <div id="windowCountSection" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Number of Windows</div><div style="font-size:0.78rem;color:var(--purple);">£15 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('windows',-1)">−</button><span class="qty-val" id="val-windows">0</span><button class="qty-btn" onclick="changeQty('windows',1)">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Appliances -->
+    <div class="form-step" id="fstep4">
+      <h3>Step 4 — Appliances</h3>
+      <p class="step-desc">Select any appliances you'd like professionally cleaned.</p>
+      <div class="check-grid">
+        <label class="check-item" onclick="toggleCheck(this,'singleOven',30)"><input type="checkbox"/><span class="check-label">Single Oven</span><span class="check-price">+£30</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'doubleOven',45)"><input type="checkbox"/><span class="check-label">Double Oven</span><span class="check-price">+£45</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'agaOven',80)"><input type="checkbox"/><span class="check-label">AGA Oven</span><span class="check-price">+£80</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'hob',15)"><input type="checkbox"/><span class="check-label">Hob</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'extractorFan',15)"><input type="checkbox"/><span class="check-label">Extractor Fan</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'fridgeSingle',15)"><input type="checkbox"/><span class="check-label">Fridge (Single)</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'fridgeDouble',20)"><input type="checkbox"/><span class="check-label">Fridge (Double)</span><span class="check-price">+£20</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'freezer',15)"><input type="checkbox"/><span class="check-label">Freezer (pre-defrosted)</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'dishwasher',15)"><input type="checkbox"/><span class="check-label">Dishwasher</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'washingMachine',15)"><input type="checkbox"/><span class="check-label">Washing Machine</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'tumbleDryer',15)"><input type="checkbox"/><span class="check-label">Tumble Dryer</span><span class="check-price">+£15</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'bbqSmall',25)"><input type="checkbox"/><span class="check-label">BBQ (Small)</span><span class="check-price">+£25</span></label>
+      </div>
+      <div class="notice-box" style="margin-top:14px;">ℹ️ <span>Oven cleaning covers simple clip on/off parts only. Complex glass removal is excluded for safety reasons.</span></div>
+    </div>
+
+    <!-- STEP 5: Carpets -->
+    <div class="form-step" id="fstep5">
+      <h3>Step 5 — Carpet &amp; Steam Cleaning</h3>
+      <p class="step-desc">Deep carpet cleaning uses hot water extraction. Select the number of carpeted areas.</p>
+      <div class="radio-group" style="margin-bottom:16px;">
+        <label class="radio-item selected" onclick="selectRadio(this,'carpetYN','No');document.getElementById('carpetCountSection').style.display='none';changeQty('carpets',0,true)">
+          <input type="radio" name="carpetYN" checked/>
+          <div class="radio-item-content"><div class="radio-label">No carpet cleaning needed</div></div>
+        </label>
+        <label class="radio-item" onclick="selectRadio(this,'carpetYN','Yes');document.getElementById('carpetCountSection').style.display='block'">
+          <input type="radio" name="carpetYN"/>
+          <div class="radio-item-content"><div class="radio-label">Yes — add deep carpet cleaning</div><div class="radio-sub">£18.50 per carpeted area</div></div>
+        </label>
+      </div>
+      <div id="carpetCountSection" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1.5px solid var(--grey-200);border-radius:8px;">
+          <div><div style="font-weight:600;font-size:0.9rem;">Carpeted Areas</div><div style="font-size:0.78rem;color:var(--purple);">£18.50 each</div></div>
+          <div class="qty-control"><button class="qty-btn" onclick="changeQty('carpets',-1)">−</button><span class="qty-val" id="val-carpets">1</span><button class="qty-btn" onclick="changeQty('carpets',1)">+</button></div>
+        </div>
+      </div>
+      <h3 style="margin-top:20px;margin-bottom:10px;font-size:0.92rem;">Steam Cleaning</h3>
+      <div class="check-grid">
+        <label class="check-item" onclick="toggleCheck(this,'steamCurtains',20)"><input type="checkbox"/><span class="check-label">Curtains</span><span class="check-price">+£20</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'steamMattress',25)"><input type="checkbox"/><span class="check-label">Mattress</span><span class="check-price">+£25</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'sofa2',35)"><input type="checkbox"/><span class="check-label">Sofa (2-seater)</span><span class="check-price">+£35</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'sofa3',45)"><input type="checkbox"/><span class="check-label">Sofa (3-seater)</span><span class="check-price">+£45</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'sofaL',60)"><input type="checkbox"/><span class="check-label">L-Shaped Sofa</span><span class="check-price">+£60</span></label>
+      </div>
+    </div>
+
+    <!-- STEP 6: Extras -->
+    <div class="form-step" id="fstep6">
+      <h3>Step 6 — Extras &amp; Notes</h3>
+      <p class="step-desc">Any additional services or important information for the cleaning team.</p>
+      <h4 style="font-size:0.85rem;font-weight:600;margin-bottom:8px;color:var(--grey-700);">Additional Services</h4>
+      <div class="check-grid" style="margin-bottom:18px;">
+        <label class="check-item" onclick="toggleCheck(this,'gutterCleaning',60)"><input type="checkbox"/><span class="check-label">Gutter Cleaning</span><span class="check-price">+£60</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'wallWiping',20)"><input type="checkbox"/><span class="check-label">Wall Wiping</span><span class="check-price">+£20</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'balcony',25)"><input type="checkbox"/><span class="check-label">Balcony</span><span class="check-price">+£25</span></label>
+        <label class="check-item" onclick="toggleCheck(this,'garage',35)"><input type="checkbox"/><span class="check-label">Garage</span><span class="check-price">+£35</span></label>
+      </div>
+      <div class="form-group">
+        <label>Can you provide free parking near the property?</label>
+        <div class="radio-group" style="flex-direction:row;gap:10px;">
+          <label class="radio-item" style="flex:1;" onclick="selectRadio(this,'parkingQ','Yes');document.getElementById('parkingDetails').style.display='block'"><input type="radio" name="parkingQ"/> Yes</label>
+          <label class="radio-item selected" style="flex:1;" onclick="selectRadio(this,'parkingQ','No');document.getElementById('parkingDetails').style.display='none'"><input type="radio" name="parkingQ" checked/> No</label>
+        </div>
+      </div>
+      <div id="parkingDetails" style="display:none;">
+        <div class="form-row">
+          <div class="form-group"><label>Parking permit name</label><input type="text" id="parkingName" placeholder="Your name"/></div>
+          <div class="form-group"><label>Parking bay / number</label><input type="text" id="parkingNumber" placeholder="e.g. Bay 12"/></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Special instructions or notes for the cleaning team</label>
+        <textarea id="bookingNotes" placeholder="e.g. access instructions, pets, areas to focus on, any fragile items…"></textarea>
+      </div>
+    </div>
+
+    <!-- STEP 7: Date -->
+    <div class="form-step" id="fstep7">
+      <h3>Step 7 — Choose a Date &amp; Time</h3>
+      <p class="step-desc">Select your preferred date and time slot. We'll confirm your contractor within 24 hours.</p>
+      <div class="form-row">
+        <div class="form-group"><label>Preferred Date *</label><input type="text" id="bookDate" placeholder="DD/MM/YYYY"/></div>
+        <div class="form-group"><label>Preferred Time *</label>
+          <select id="bookTime">
+            <option value="">Select a slot</option>
+            <option>Morning (8:00–12:00)</option>
+            <option>Afternoon (12:00–16:00)</option>
+            <option>Flexible (any time)</option>
+          </select>
+        </div>
+      </div>
+      <div class="notice-box">📅 <span>Bookings require at least 48 hours' notice. For same-day or next-day cleans, please call us directly.</span></div>
+    </div>
+
+    <!-- STEP 8: Details -->
+    <div class="form-step" id="fstep8">
+      <h3>Step 8 — Your Details</h3>
+      <p class="step-desc">We need your contact details and property address to confirm the booking.</p>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="clientName" placeholder="Your full name"/></div>
+        <div class="form-group"><label>Email Address *</label><input type="email" id="clientEmail" placeholder="your@email.com"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone Number *</label><input type="tel" id="clientPhone" placeholder="+44 …"/></div>
+        <div class="form-group"><label>Postcode *</label><input type="text" id="clientPostcode" placeholder="e.g. NR1 3AA"/></div>
+      </div>
+      <div class="form-group"><label>Full Property Address *</label><input type="text" id="clientAddress" placeholder="Street, city"/></div>
+      <div class="notice-box">🔒 <span>Your data is held securely in accordance with our Privacy Policy and GDPR regulations.</span></div>
+      <button class="btn-pay" onclick="submitBooking()">🔒 Confirm &amp; Submit Booking Request</button>
+      <p style="font-size:0.75rem;color:var(--grey-400);text-align:center;margin-top:8px;">Payment collected by secure Stripe checkout after confirmation. Full invoice provided.</p>
+    </div>
+
+    <!-- STEP NAV -->
+    <div class="step-nav">
+      <button class="btn-step-back" id="backBtn" onclick="changeStep(-1)" style="display:none">← Back</button>
+      <div style="font-size:0.8rem;color:var(--grey-400)" id="stepCounter">Step 1 of 8</div>
+      <button class="btn-step-next" id="nextBtn" onclick="changeStep(1)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── PRICE SIDEBAR ── -->
+  <div class="price-card">
+    <h3>💷 Your Price Summary</h3>
+    <div id="priceLines">
+      <div class="price-line"><span class="key">Service</span><span class="val" id="pl-service">End of Tenancy</span></div>
+      <div class="price-line"><span class="key">Base rate</span><span class="val" id="pl-base">£150.00</span></div>
+      <div class="price-line" id="pl-rooms-row" style="display:none"><span class="key">Rooms</span><span class="val" id="pl-rooms">£0.00</span></div>
+      <div class="price-line" id="pl-windows-row" style="display:none"><span class="key">Windows</span><span class="val" id="pl-windows">£0.00</span></div>
+      <div class="price-line" id="pl-appliances-row" style="display:none"><span class="key">Appliances</span><span class="val" id="pl-appliances">£0.00</span></div>
+      <div class="price-line" id="pl-carpets-row" style="display:none"><span class="key">Carpets</span><span class="val" id="pl-carpets">£0.00</span></div>
+      <div class="price-line" id="pl-extras-row" style="display:none"><span class="key">Extras</span><span class="val" id="pl-extras">£0.00</span></div>
+    </div>
+    <div class="price-total-line">
+      <span class="key">Estimated Total</span>
+      <span class="val" id="priceTotal">£150.00</span>
+    </div>
+    <p class="price-note">Final price confirmed after booking review. VAT not applicable at this time.</p>
+    <div class="trust-badges">
+      <div class="trust-badge"><span>🛡️</span> DBS Verified Contractors</div>
+      <div class="trust-badge"><span>🔒</span> Fully Insured &amp; GDPR Compliant</div>
+      <div class="trust-badge"><span>📋</span> Itemised Invoice Provided</div>
+    </div>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <h3>Booking Request Received!</h3>
+    <p>Thank you! We'll review your details and confirm within 24 hours. A payment link and confirmation email will follow.</p>
+    <div class="modal-ref" id="bookingRef">SH-000000</div>
+    <button class="btn-primary" style="width:100%;padding:12px;margin-top:12px;" onclick="document.getElementById('bookingModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<!-- GEO MODAL -->
+<div class="geo-modal-overlay" id="geoModal">
+  <div class="geo-modal">
+    <div style="font-size:2.5rem;margin-bottom:12px;">📍</div>
+    <h3>Coming Soon to Your Area</h3>
+    <p>We're not yet operating in that postcode. Enter your email below and we'll notify you when we launch in your area.</p>
+    <div class="geo-notify-form">
+      <input type="text" id="geoPostcode" placeholder="Your postcode (e.g. IP1 2AB)"/>
+      <input type="email" id="geoEmail" placeholder="your@email.com"/>
+      <button class="btn-primary" style="padding:12px;" onclick="submitGeoNotify()">Notify Me When Live</button>
+      <button style="background:none;border:none;color:var(--grey-400);font-size:0.85rem;cursor:pointer;margin-top:4px;" onclick="document.getElementById('geoModal').classList.remove('show')">No thanks, close</button>
+    </div>
+    <div id="geoSuccess" class="success-msg" style="display:none;margin-top:10px;">🎉 You're on the list! We'll email you when we launch in your area.</div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Sparkling Homes Limited — Registered in England & Wales | <a href="mailto:admin@sparklinghomes.co.uk">admin@sparklinghomes.co.uk</a></p>
+  <p style="margin-top:6px;font-size:0.75rem;">DBS Verified · Fully Insured · GDPR Compliant · Norwich, Norfolk</p>
+</footer>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+const state = {
+  currentStep: 1,
+  totalSteps: 8,
+  serviceName: 'End of Tenancy Cleaning',
+  basePrice: 150,
+  multiplier: 1.15,
+  rooms: { bedrooms:1, bathrooms:1, kitchens:1, livingrooms:1, diningrooms:0, conservatories:0, utilityrooms:0 },
+  roomPrices: { bedrooms:30, bathrooms:35, kitchens:55, livingrooms:35, diningrooms:20, conservatories:35, utilityrooms:20 },
+  windows: 0,
+  windowPrice: 15,   // UPDATED from £30 to £15
+  appliances: {},
+  carpets: 0,
+  carpetPrice: 18.50,
+  steamItems: {},
+  extras: {}
+};
+
+const stepNames = ['Service','Rooms','Windows','Appliances','Carpets','Extras','Date','Details'];
+
+// ── STEP NAV ───────────────────────────────────────────────────────────────
+function changeStep(dir){
+  const next = state.currentStep + dir;
+  if(next < 1 || next > state.totalSteps) return;
+  document.getElementById('fstep'+state.currentStep).classList.remove('active');
+  state.currentStep = next;
+  document.getElementById('fstep'+state.currentStep).classList.add('active');
+  document.getElementById('backBtn').style.display = state.currentStep > 1 ? 'block' : 'none';
+  document.getElementById('nextBtn').style.display = state.currentStep < state.totalSteps ? 'block' : 'none';
+  document.getElementById('stepCounter').textContent = 'Step '+state.currentStep+' of '+state.totalSteps;
+  document.getElementById('progressFill').style.width = (((state.currentStep-1)/(state.totalSteps-1))*100)+'%';
+  updateStepIndicators();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateStepIndicators(){
+  document.getElementById('stepIndicators').innerHTML = stepNames.map((n,i)=>{
+    const num = i+1;
+    let cls = 'step-ind';
+    if(num < state.currentStep) cls += ' done';
+    else if(num === state.currentStep) cls += ' active';
+    return `<span class="${cls}">${num===state.currentStep?'▶ ':''}${n}</span>`;
+  }).join('');
+}
+updateStepIndicators();
+
+// ── SERVICE ────────────────────────────────────────────────────────────────
+function selectService(el, name, base, mult){
+  document.querySelectorAll('[name=serviceType]').forEach(r => r.closest('.radio-item').classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  if(base === 0){
+    alert('Commercial cleaning is quote-based. Please contact us at admin@sparklinghomes.co.uk for a tailored quote.');
+    return;
+  }
+  state.serviceName = name;
+  state.basePrice = base;
+  state.multiplier = mult;
+  updatePriceSummary();
+}
+
+function selectRadio(el, name, value){
+  document.querySelectorAll(`[name=${name}]`).forEach(r => r.closest('.radio-item').classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  if(name === 'windowType'){
+    document.getElementById('windowCountSection').style.display = value === 'None' ? 'none' : 'block';
+    if(value === 'None'){ state.windows = 0; document.getElementById('val-windows').textContent = 0; }
+    updatePriceSummary();
+  }
+}
+
+// ── QUANTITY ───────────────────────────────────────────────────────────────
+function changeQty(key, delta, reset){
+  if(reset){ state[key] = 0; document.getElementById('val-'+key).textContent = 0; updatePriceSummary(); return; }
+  if(key in state.rooms){
+    state.rooms[key] = Math.max(0, state.rooms[key] + delta);
+    document.getElementById('val-'+key).textContent = state.rooms[key];
+  } else {
+    state[key] = Math.max(0, (state[key]||0) + delta);
+    document.getElementById('val-'+key).textContent = state[key];
+  }
+  updatePriceSummary();
+}
+
+// ── CHECKBOXES ─────────────────────────────────────────────────────────────
+function toggleCheck(el, key, price){
+  el.classList.toggle('selected');
+  const cb = el.querySelector('input');
+  cb.checked = !cb.checked;
+  const steamKeys = ['steamCurtains','steamMattress','sofa2','sofa3','sofaL'];
+  const extraKeys = ['gutterCleaning','wallWiping','balcony','garage'];
+  if(cb.checked){
+    if(steamKeys.includes(key)) state.steamItems[key] = price;
+    else if(extraKeys.includes(key)) state.extras[key] = price;
+    else state.appliances[key] = price;
+  } else {
+    delete state.steamItems[key]; delete state.appliances[key]; delete state.extras[key];
+  }
+  updatePriceSummary();
+}
+
+// ── PRICE ──────────────────────────────────────────────────────────────────
+function calcTotal(){
+  const roomsCost = Object.keys(state.rooms).reduce((s,k) => s + (state.rooms[k] * (state.roomPrices[k]||0)), 0);
+  const windowsCost = state.windows * state.windowPrice;
+  const appliancesCost = Object.values(state.appliances).reduce((s,v)=>s+v,0);
+  const carpetsCost = state.carpets * state.carpetPrice;
+  const steamCost = Object.values(state.steamItems).reduce((s,v)=>s+v,0);
+  const extrasCost = Object.values(state.extras).reduce((s,v)=>s+v,0);
+  const subtotal = state.basePrice + roomsCost + windowsCost + appliancesCost + carpetsCost + steamCost + extrasCost;
+  return { roomsCost, windowsCost, appliancesCost, carpetsCost, steamCost, extrasCost, subtotal, total: subtotal * state.multiplier };
+}
+
+function updatePriceSummary(){
+  const c = calcTotal();
+  document.getElementById('pl-service').textContent = state.serviceName;
+  document.getElementById('pl-base').textContent = '£'+state.basePrice.toFixed(2);
+  const show = (rowId, valId, val) => {
+    const row = document.getElementById(rowId);
+    if(val > 0){ row.style.display='flex'; document.getElementById(valId).textContent='£'+val.toFixed(2); } else { row.style.display='none'; }
+  };
+  show('pl-rooms-row','pl-rooms', c.roomsCost);
+  show('pl-windows-row','pl-windows', c.windowsCost);
+  show('pl-appliances-row','pl-appliances', c.appliancesCost);
+  show('pl-carpets-row','pl-carpets', c.carpetsCost + c.steamCost);
+  show('pl-extras-row','pl-extras', c.extrasCost);
+  document.getElementById('priceTotal').textContent = '£'+c.total.toFixed(2);
+}
+updatePriceSummary();
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────
+function submitBooking(){
+  const name     = document.getElementById('clientName').value.trim();
+  const email    = document.getElementById('clientEmail').value.trim();
+  const phone    = document.getElementById('clientPhone').value.trim();
+  const address  = document.getElementById('clientAddress').value.trim();
+  const postcode = (document.getElementById('clientPostcode').value||'').toUpperCase().trim();
+  const bookDate = document.getElementById('bookDate').value.trim();
+  const bookTime = document.getElementById('bookTime').value.trim();
+  const notes    = document.getElementById('bookingNotes').value.trim();
+  if(!name)     { alert('Please enter your name.'); return; }
+  if(!email)    { alert('Please enter your email address.'); return; }
+  if(!phone)    { alert('Please enter your phone number.'); return; }
+  if(!address)  { alert('Please enter your property address.'); return; }
+  if(!postcode) { alert('Please enter your postcode.'); return; }
+  if(!bookDate) { alert('Please select a preferred date.'); return; }
+  if(!bookTime) { alert('Please select a preferred time slot.'); return; }
+  const norfolkPrefixes = ['NR','PE3','PE30','PE31','PE32','PE33','PE34','PE35','PE36','PE37','PE38','IP22','IP21','IP20'];
+  if(!norfolkPrefixes.some(p => postcode.startsWith(p))){
+    document.getElementById('geoModal').classList.add('show');
+    document.getElementById('geoPostcode').value = postcode;
+    return;
+  }
+  const ref = 'SH-' + Date.now().toString().slice(-6);
+  document.getElementById('bookingRef').textContent = ref;
+  const c = calcTotal();
+  const roomsBreakdown = Object.keys(state.rooms).filter(k=>state.rooms[k]>0)
+    .map(k=>`  ${k}: ${state.rooms[k]} x £${state.roomPrices[k]} = £${(state.rooms[k]*state.roomPrices[k]).toFixed(2)}`).join('\n');
+  const subject = encodeURIComponent(`New Booking Request [${ref}] — ${name} — ${postcode}`);
+  const body = encodeURIComponent(
+`NEW BOOKING REQUEST — SPARKLING HOMES
+======================================
+Booking Reference: ${ref}
+
+CLIENT DETAILS
+--------------
+Name:     ${name}
+Email:    ${email}
+Phone:    ${phone}
+Address:  ${address}, ${postcode}
+
+BOOKING DETAILS
+---------------
+Service:  ${state.serviceName}
+Date:     ${bookDate}
+Time:     ${bookTime}
+
+PRICE BREAKDOWN
+---------------
+Base Rate:   £${state.basePrice.toFixed(2)}
+
+Rooms:
+${roomsBreakdown || '  None'}
+
+Windows: ${state.windows > 0 ? state.windows + ' x £15 = £' + c.windowsCost.toFixed(2) : 'None'}
+
+Appliances: ${Object.keys(state.appliances).length ? Object.keys(state.appliances).map(k=>`${k}: £${state.appliances[k]}`).join(', ') : 'None'}
+
+Carpet Cleaning: ${state.carpets > 0 ? state.carpets + ' areas x £18.50 = £' + c.carpetsCost.toFixed(2) : 'None'}
+
+Steam Cleaning: ${Object.keys(state.steamItems).length ? Object.keys(state.steamItems).map(k=>`${k}: £${state.steamItems[k]}`).join(', ') : 'None'}
+
+Extras: ${Object.keys(state.extras).length ? Object.keys(state.extras).map(k=>`${k}: £${state.extras[k]}`).join(', ') : 'None'}
+
+Service Multiplier: x${state.multiplier}
+-------------------------------
+ESTIMATED TOTAL: £${c.total.toFixed(2)}
+
+NOTES: ${notes || 'None'}
+
+ACTION REQUIRED: Contact client within 24 hours and send Stripe payment link.
+`);
+  window.location.href = `mailto:admin@sparklinghomes.co.uk?subject=${subject}&body=${body}`;
+  document.getElementById('bookingModal').classList.add('show');
+}
+
+// ── GEO NOTIFY ─────────────────────────────────────────────────────────────
+function submitGeoNotify(){
+  const p = document.getElementById('geoPostcode').value.trim();
+  const e = document.getElementById('geoEmail').value.trim();
+  if(!p||!e){ alert('Please fill in both fields.'); return; }
+  document.getElementById('geoSuccess').style.display='block';
+  setTimeout(()=>{ document.getElementById('geoModal').classList.remove('show'); document.getElementById('geoSuccess').style.display='none'; },3000);
+}
+</script>
+</body>
+</html>
